@@ -172,7 +172,7 @@ CITIES = [
     ("greatfalls",      "Great Falls MT"),
     ("casper",          "Casper WY"),
     ("cheyenne",        "Cheyenne WY"),
-    ("rapid city",      "Rapid City SD"),
+    ("rapidcity",      "Rapid City SD"),
     ("siouxfalls",      "Sioux Falls SD"),
     ("fargo",           "Fargo ND"),
     ("bismarck",        "Bismarck ND"),
