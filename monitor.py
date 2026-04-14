@@ -172,7 +172,7 @@ CITIES = [
     ("greatfalls",      "Great Falls MT"),
     ("casper",          "Casper WY"),
     ("cheyenne",        "Cheyenne WY"),
-    ("rapidcity",      "Rapid City SD"),
+    ("rapid city",      "Rapid City SD"),
     ("siouxfalls",      "Sioux Falls SD"),
     ("fargo",           "Fargo ND"),
     ("bismarck",        "Bismarck ND"),
@@ -197,9 +197,28 @@ log = logging.getLogger(__name__)
 
 def build_feeds(subdomain: str, label: str):
     base = f"https://{subdomain}.craigslist.org"
+    # Combined OR query — max coverage, single request per section
+    wanted_query = (
+        "dumpster+rental"
+        "+OR+dumpster+needed"
+        "+OR+roll+off+container"
+        "+OR+junk+removal"
+        "+OR+debris+removal"
+        "+OR+trash+hauling"
+        "+OR+waste+removal"
+        "+OR+cleanout+service"
+        "+OR+yard+waste+removal"
+        "+OR+construction+debris"
+    )
+    services_query = (
+        "dumpster+rental"
+        "+OR+roll+off"
+        "+OR+junk+removal"
+        "+OR+debris+removal"
+    )
     return [
-        (f"{label} [SERVICES]", f"{base}/search/sss?query=dumpster+rental&format=rss"),
-        (f"{label} [WANTED]",   f"{base}/search/wts?query=dumpster&format=rss"),
+        (f"{label} [WANTED]",   f"{base}/search/wts?query={wanted_query}&format=rss"),
+        (f"{label} [SERVICES]", f"{base}/search/sss?query={services_query}&format=rss"),
     ]
 
 
@@ -381,7 +400,7 @@ def poll_telegram_updates():
 def run():
     import threading
 
-    total_feeds = len(CITIES) * 2
+    total_feeds = len(CITIES) * 2  # 1 wanted (OR query) + 1 services (OR query)
     log.info(f"🚀 Bot started — {len(CITIES)} cities, {total_feeds} feeds.")
 
     send_telegram(
